@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Block direct access to application files
+RewriteRule ^app/ - [F,L]
+RewriteRule ^core/ - [F,L]
+RewriteRule ^config/ - [F,L]
+
+# Allow access to public directory
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L]
