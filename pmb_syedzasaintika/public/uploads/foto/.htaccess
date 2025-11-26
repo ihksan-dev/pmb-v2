@@ -1,0 +1,5 @@
+# Protect against PHP execution
+<Files "*.php">
+    Order Allow,Deny
+    Deny from all
+</Files>

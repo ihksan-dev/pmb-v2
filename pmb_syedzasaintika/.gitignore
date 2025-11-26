@@ -1,0 +1,30 @@
+# Logs
+/logs/*
+!logs/.gitkeep
+
+# Uploads
+/uploads/*
+!uploads/.gitkeep
+!/uploads/foto/.htaccess
+!/uploads/dokumen/.htaccess
+
+# Environment specific files
+.env
+config/database.php
+
+# Composer dependencies
+vendor/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Cache files
+cache/
+tmp/
