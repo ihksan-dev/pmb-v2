@@ -15,6 +15,51 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
+-- 5.4 Tabel Program Studi
+CREATE TABLE prodi (
+    id_prodi INT(11) AUTO_INCREMENT PRIMARY KEY,
+    kode_prodi VARCHAR(10) UNIQUE NOT NULL,
+    nama_prodi VARCHAR(100) NOT NULL,
+    jenjang ENUM('D3', 'D4', 'S1') NOT NULL,
+    kuota INT(4) NOT NULL,
+    biaya_pendaftaran DECIMAL(10,2) NOT NULL,
+    status_aktif TINYINT(1) DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- 5.5 Tabel Tahun Ajaran
+CREATE TABLE tahun_ajaran (
+    id_tahun INT(11) AUTO_INCREMENT PRIMARY KEY,
+    tahun_ajaran VARCHAR(9) NOT NULL, -- Format: 2025/2026
+    periode ENUM('Ganjil', 'Genap') NOT NULL,
+    tanggal_mulai DATE NOT NULL,
+    tanggal_selesai DATE NOT NULL,
+    kuota_total INT(4) NOT NULL,
+    status_aktif TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- 5.6 Tabel Provinsi
+CREATE TABLE provinsi (
+    id_provinsi INT(11) AUTO_INCREMENT PRIMARY KEY,
+    kode_provinsi VARCHAR(5) UNIQUE NOT NULL,
+    nama_provinsi VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- 5.7 Tabel Kabupaten
+CREATE TABLE kabupaten (
+    id_kabupaten INT(11) AUTO_INCREMENT PRIMARY KEY,
+    kode_kabupaten VARCHAR(8) UNIQUE NOT NULL,
+    nama_kabupaten VARCHAR(100) NOT NULL,
+    jenis ENUM('Kabupaten', 'Kota') NOT NULL,
+    id_provinsi INT(11) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_provinsi) REFERENCES provinsi(id_provinsi)
+) ENGINE=InnoDB;
+
 -- 5.2 Tabel Mahasiswa
 CREATE TABLE mahasiswa (
     id_mahasiswa INT(11) AUTO_INCREMENT PRIMARY KEY,
@@ -49,7 +94,8 @@ CREATE TABLE mahasiswa (
     FOREIGN KEY (id_prodi) REFERENCES prodi(id_prodi),
     FOREIGN KEY (id_tahun_ajaran) REFERENCES tahun_ajaran(id_tahun),
     FOREIGN KEY (id_provinsi) REFERENCES provinsi(id_provinsi),
-    FOREIGN KEY (id_kabupaten) REFERENCES kabupaten(id_kabupaten)
+    FOREIGN KEY (id_kabupaten) REFERENCES kabupaten(id_kabupaten),
+    FOREIGN KEY (verified_by) REFERENCES users(id_user)
 ) ENGINE=InnoDB;
 
 -- 5.3 Tabel Captcha Sessions
@@ -62,48 +108,6 @@ CREATE TABLE captcha_sessions (
     is_used TINYINT(1) DEFAULT 0,
     ip_address VARCHAR(45) NULL,
     user_agent TEXT NULL
-) ENGINE=InnoDB;
-
--- Additional tables referenced in foreign keys
-CREATE TABLE prodi (
-    id_prodi INT(11) AUTO_INCREMENT PRIMARY KEY,
-    kode_prodi VARCHAR(10) UNIQUE NOT NULL,
-    nama_prodi VARCHAR(100) NOT NULL,
-    jenjang ENUM('D3', 'D4', 'S1') NOT NULL,
-    kuota INT(4) NOT NULL,
-    biaya_pendaftaran DECIMAL(10,2) NOT NULL,
-    status_aktif TINYINT(1) DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
-
-CREATE TABLE tahun_ajaran (
-    id_tahun INT(11) AUTO_INCREMENT PRIMARY KEY,
-    tahun_ajaran VARCHAR(9) NOT NULL, -- Format: 2025/2026
-    periode ENUM('Ganjil', 'Genap') NOT NULL,
-    tanggal_mulai DATE NOT NULL,
-    tanggal_selesai DATE NOT NULL,
-    kuota_total INT(4) NOT NULL,
-    status_aktif TINYINT(1) DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
-
-CREATE TABLE provinsi (
-    id_provinsi INT(11) AUTO_INCREMENT PRIMARY KEY,
-    kode_provinsi VARCHAR(5) UNIQUE NOT NULL,
-    nama_provinsi VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
-
-CREATE TABLE kabupaten (
-    id_kabupaten INT(11) AUTO_INCREMENT PRIMARY KEY,
-    kode_kabupaten VARCHAR(8) UNIQUE NOT NULL,
-    nama_kabupaten VARCHAR(100) NOT NULL,
-    jenis ENUM('Kabupaten', 'Kota') NOT NULL,
-    id_provinsi INT(11) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_provinsi) REFERENCES provinsi(id_provinsi)
 ) ENGINE=InnoDB;
 
 -- 5.4 Default Data
