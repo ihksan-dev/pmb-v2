@@ -1,0 +1,8 @@
+<IfModule mod_php5.c>
+  php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+  php_flag engine off
+</IfModule>
+AddType text/plain .php .php3 .phtml
+RemoveHandler .php .php3 .phtml
